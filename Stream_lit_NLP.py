@@ -1,37 +1,37 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[110]:
+# In[1]:
 
 
 import streamlit as st
 
 
-# In[111]:
+# In[2]:
 
 
 import pickle
 
 
-# In[112]:
+# In[3]:
 
 
 from PIL import Image
 
 
-# In[113]:
+# In[4]:
 
 
 import requests
 
 
-# In[114]:
+# In[5]:
 
 
 import time
 
 
-# In[115]:
+# In[6]:
 
 
 import pandas as pd
@@ -62,7 +62,7 @@ nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
 
 
-# In[116]:
+# In[7]:
 
 
 from nltk import WordNetLemmatizer # lemmatizer using WordNet
@@ -70,57 +70,57 @@ from nltk.corpus import wordnet # imports WordNet
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-# In[117]:
+# In[8]:
 
 
 import nltk
 nltk.download('omw-1.4')
 
 
-# In[118]:
+# In[9]:
 
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-# In[120]:
+# In[10]:
 
 
 st.title("Job Matcher")
 
 
-# In[119]:
+# In[11]:
 
 
 st.image('streamlit.jpeg')
 
 
-# In[121]:
+# In[12]:
 
 
 st.markdown("Enter all your skills that you can think of and separate with a comma! This system will return the jobs that align with your skillset.")
 
 
-# In[122]:
+# In[13]:
 
 
 #Add Sidebar
 st.sidebar.markdown("## Match the jobs that align with your skillset")
 st.sidebar.caption("About This System:")
-st.sidebar.caption("This recommendation system is constructed using cosine similarities between your skillset and more than 22000 job descriptions that were trained utilizing NLTK NMF Natural Language Processing algorithm.")
+st.sidebar.caption("This recommendation system was constructed by utilizing cosine similarities between your skillset and over 22,000 job descriptions that were trained using the NLTK NMF natural language processing algorithm..")
 
 
-# In[123]:
+# In[14]:
 
 
 # Sidebar cont.
 st.sidebar.markdown("#### Informationa about the database:")
 st.sidebar.caption("Downloaded from Kaggle: Dice Tech Job Board")
-st.sidebar.caption("Due to data constrains, please note that this system is only matching the jobs in the tech industry.")
+st.sidebar.caption("Please note that due to constraints on the data source, this system is only capable of matching jobs within the technology industry. Additionally, it should be noted that the dataset used was downloaded from Dice.com in 2018.")
 
 
-# In[135]:
+# In[15]:
 
 
 # Sidebar cont.
@@ -129,51 +129,51 @@ st.sidebar.caption("Github: https://github.com/t36yang")
 st.sidebar.caption("LinkedIn: www.linkedin.com/in/yangvickie")
 
 
-# In[125]:
+# In[16]:
 
 
 skill=st.text_input("Please enter your skills")
 
 
-# In[126]:
+# In[17]:
 
 
 userinput= skill
 
 
-# In[133]:
+# In[18]:
 
 
 new_df=pd.read_pickle('cleanedfile_dicejob.pickle')
 
 
-# In[128]:
+# In[19]:
 
 
 new_df[['City','State','Other']]=new_df.joblocation_address.str.split(", ", expand=True)
 
 
-# In[129]:
+# In[20]:
 
 
 new_df=new_df.drop('Other', axis=1)
 
 
-# In[130]:
+# In[21]:
 
 
 new_df.State=new_df.State.str.upper().apply(lambda x : "TX" if x == "TEXAS" else "DC" if x == "WASHINGTON" else "NY" if x == "SPRINGS" else x)
 
 
-# In[131]:
+# In[47]:
 
 
 st.write("---")
 selectedState = st.selectbox('Select State:',
-                    new_df.State.unique())
+                    np.append(new_df.State.sort_values().unique(),["All"]))
 
 
-# In[127]:
+# In[48]:
 
 
 st.write("---")
@@ -182,7 +182,7 @@ jobs=st.slider('# of Recommended Jobs',0,100,1)
 'You selected: ', jobs, 'jobs'
 
 
-# In[132]:
+# In[74]:
 
 
 def input_process(text):
@@ -227,11 +227,9 @@ def input_process(text):
     txt_processed = " ".join([wnl.lemmatize(x[0], x[1]) for x in txt_tagged if x[1] is not None])
     return txt_processed
     
-    
 
 
-
-# In[136]:
+# In[75]:
 
 
 if st.button('Show Jobs'):
@@ -259,6 +257,28 @@ if st.button('Show Jobs'):
     
     st.write("Jobs:")
     recommend=new_df.iloc[highest_sim, :]
-    st.dataframe(recommend.loc[recommend['State']==selectedState][['jobtitle','jobdescription',"company",'advertiserurl']].rename(columns={"Job Title": 'jobtitle',"Job Description" : 'jobdescription',"Company": 'company','Link':'advertiserurl'}))
     
+    if selectedState=="All":
+        st.dataframe(recommend[['jobtitle','jobdescription',"company",'advertiserurl']].rename(columns={"Job Title": 'jobtitle',"Job Description" : 'jobdescription',"Company": 'company','Link':'advertiserurl'}))
+    else:
+        st.dataframe(recommend.loc[recommend['State']==selectedState][['jobtitle','jobdescription',"company",'advertiserurl']].rename(columns={"Job Title": 'jobtitle',"Job Description" : 'jobdescription',"Company": 'company','Link':'advertiserurl'}))
+    
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
