@@ -6,3 +6,4 @@ seaborn
 nltk
 wordcloud
 streamlit>= 1.10.0
+nmf
