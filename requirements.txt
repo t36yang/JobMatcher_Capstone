@@ -2,4 +2,5 @@ scikit-learn
 matplotlib
 numpy 
 pandas
-streamlit==0.62.0
+seaborn
+streamlit>= 1.9.2
