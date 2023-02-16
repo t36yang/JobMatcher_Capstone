@@ -3,4 +3,5 @@ matplotlib
 numpy 
 pandas
 seaborn
+nltk
 streamlit>= 1.9.2
