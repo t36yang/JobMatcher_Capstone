@@ -114,6 +114,17 @@ Visualization using TSNE to examine the unsupervised clustering of the datapoint
 
 ![scatterplot of job classes](https://user-images.githubusercontent.com/117051182/219465860-054d9c04-3a48-4dc9-b216-f83e93871503.png)
 
+GENSIM - LDA Model - not used
+The model didn't produce an ideal result as the graph shows below that the topics overlap each other though it achieve a coherence score of 0.44.
+
+
+![gensim lda](https://user-images.githubusercontent.com/117051182/219480751-58b3562b-fa76-45a1-9402-8ebb5b8d31f8.png)
+
+
+
+![gensimlda pyldavis](https://user-images.githubusercontent.com/117051182/219480927-96df2f78-8d08-42a6-aec2-b8dff6626fe6.jpg)
+
+
 
 ## RECOMMENDATION SYSTEM
 
